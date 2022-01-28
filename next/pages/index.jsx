@@ -20,7 +20,7 @@ function ListComponent({ item }) {
     <ListItem item={(
       <>
         <Link href={`/${item.gallery}`}><a>{item.gallery}</a></Link>
-        <Link href={`/${item.gallery}/all`}><a>Search album</a></Link>
+        <Link href={`/${item.gallery}/all`}><a>!Search album!</a></Link>
       </>
   )}
     />
@@ -31,12 +31,13 @@ function Home({ galleries }) {
   return (
     <div>
       <Head>
-        <title>History App</title>
+        <title>History Appls</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1>List of Galleries</h1>
+        <h1>List of Galleries!</h1>
+        <h1>List of Galleries!</h1>
         <GenericList loading={false} error={false} items={galleries} component={ListComponent} />
       </main>
     </div>
