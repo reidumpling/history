@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import styled from 'styled-components'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import { get as getAlbum } from '../../src/lib/album'
 import { get as getAlbums } from '../../src/lib/albums'
@@ -32,7 +33,6 @@ export async function getStaticProps({ params: { gallery, album } }) {
 }
 
 export async function getStaticPaths() {
-  // Define these albums as allowed, otherwise 404
   return {
     paths: await buildStaticPaths(),
     fallback: false,
@@ -44,7 +44,17 @@ const Wrapper = styled.ul`
   padding-left: 2px;
 `
 
+const StyledLink = styled.a`
+  color: green;
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+    color: yellow;
+  }
+`
+
 function AlbumPage({ items = [] }) {
+  const [memoryIndex, setMemoryIndex] = useState(0)
   const refImageGallery = useRef(null)
   const {
     filtered,
@@ -63,8 +73,16 @@ function AlbumPage({ items = [] }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {searchBox}
-      <SplitViewer setViewed={setViewed} items={filtered} refImageGallery={refImageGallery} />
-      {memoryHtml}
+      <SplitViewer
+        setViewed={setViewed}
+        items={filtered}
+        refImageGallery={refImageGallery}
+        memoryIndex={memoryIndex}
+        setMemoryIndex={setMemoryIndex}
+      />
+      <Link href={{ pathname: '/demo/sample/nearby', query: { lon: items[memoryIndex].coordinates[0], lat: items[memoryIndex].coordinates[1] } }}>
+        <StyledLink>{memoryHtml}</StyledLink>
+      </Link>
       <Wrapper>
         {filtered.map((item, index) => (
           <ThumbImg
